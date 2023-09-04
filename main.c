@@ -27,6 +27,16 @@ int main()
                                    -1,
                                    SDL_RENDERER_ACCELERATED);
 
+    Data d = 
+    {
+        .mod = 100,
+        .timesTable = 2,
+        .Xcenter = SCREEN_WIDTH/2,        
+        .Ycenter = SCREEN_HEIGHT/2,
+        .radius = 300,
+        .red = 255, .green = 0, .blue = 0        
+    };
+
     SDL_bool running = SDL_TRUE;
     while (running == SDL_TRUE)
     {
@@ -41,8 +51,10 @@ int main()
                 
         }
 
-        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+        SDL_SetRenderDrawColor(renderer, 8, 8, 8, 255);
         SDL_RenderClear(renderer);
+
+        renderFunction(renderer, &d);
 
         SDL_RenderPresent(renderer);
         SDL_Delay(100);

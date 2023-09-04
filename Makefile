@@ -2,7 +2,7 @@
 
 CC = gcc
 
-CFLAGS = -O2 -lSDL2 -lSDL2main -lSDL2_ttf -lSDL2_image
+CFLAGS = -O2 -lm -lSDL2 -lSDL2main -lSDL2_ttf 
 
 all: bin
 
