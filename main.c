@@ -29,8 +29,8 @@ int main()
 
     Data d = 
     {
-        .mod = 100,
-        .timesTable = 2,
+        .mod = 360,
+        .timesTable = 1,
         .Xcenter = SCREEN_WIDTH/2,        
         .Ycenter = SCREEN_HEIGHT/2,
         .radius = 300,
@@ -48,7 +48,30 @@ int main()
                 running = SDL_FALSE;
                 break;
             }
-                
+            if (event.type == SDL_KEYDOWN)
+            {
+                switch (event.key.keysym.sym)
+                {
+                    case SDLK_LEFT:
+                        d.timesTable -= 1;
+                        break;
+
+                    case SDLK_RIGHT:
+                        d.timesTable += 1;
+                        break;
+
+                    case SDLK_UP:
+                        d.mod += 1;
+                        break;
+
+                    case SDLK_DOWN:
+                        if (d.mod >= 1)
+                        {
+                            d.mod -= 1;
+                        }
+                        break;
+                }
+            }
         }
 
         SDL_SetRenderDrawColor(renderer, 8, 8, 8, 255);

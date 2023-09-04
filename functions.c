@@ -7,18 +7,19 @@ void renderFunction(SDL_Renderer* renderer, Data* d)
     double t = 0;
     double tau = 6.2831852;
     double step = tau / (double)d->mod;
+    double x0, y0, x1, y1, r;
 
-    SDL_Rect point;
-    point.w = 1;
-    point.h = 1;
-    
     while (t < tau)
     {
-        point.x = d->Xcenter + d->radius*cos(t); 
-        point.y = d->Ycenter + d->radius*sin(t);
+        x0 = d->Xcenter + d->radius*cos(t); 
+        y0 = d->Ycenter + d->radius*sin(t);
+
+        x1 = d->Xcenter + d->radius*cos(t * d->timesTable); 
+        y1 = d->Ycenter + d->radius*sin(t * d->timesTable);
+
 
         SDL_SetRenderDrawColor(renderer, d->red, d->green, d->blue, 255);
-        SDL_RenderDrawRect(renderer, &point);
+        SDL_RenderDrawLine(renderer, x0, y0, x1, y1);
 
         t += step;
     }
