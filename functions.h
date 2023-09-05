@@ -8,9 +8,9 @@
 
 typedef struct Data 
 {
-
-    int timesTable;
+    
     int mod;
+    double timesTable;
 
     double Xcenter;
     double Ycenter;

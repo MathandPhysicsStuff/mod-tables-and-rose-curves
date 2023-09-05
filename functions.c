@@ -1,13 +1,14 @@
 #include "functions.h"
 
 
+
 void renderFunction(SDL_Renderer* renderer, Data* d)
 {
     //number of points
     double t = 0;
     double tau = 6.2831852;
     double step = tau / (double)d->mod;
-    double x0, y0, x1, y1, r;
+    double x0, y0, x1, y1;
 
     while (t < tau)
     {
