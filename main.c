@@ -10,8 +10,8 @@
 static SDL_Window *window = NULL;
 static SDL_Renderer *renderer = NULL;
 
-const int SCREEN_WIDTH = 640;
-const int SCREEN_HEIGHT = 640;
+const int SCREEN_WIDTH = 760;
+const int SCREEN_HEIGHT = 720;
 
 
 int main()
@@ -44,13 +44,15 @@ int main()
 
     Data d = 
     {
-        .mod = 360,
-        .timesTable = 1,
+        .mod = 720,
+        .timesTable = 0,
         .Xcenter = SCREEN_WIDTH/2,        
         .Ycenter = SCREEN_HEIGHT/2,
-        .radius = 300,
+        .radius = 360,
         .red = 255, .green = 0, .blue = 0        
     };
+
+    int color[3];
 
     SDL_bool running = SDL_TRUE;
     while (running == SDL_TRUE)
@@ -96,6 +98,13 @@ int main()
 
         SDL_SetRenderDrawColor(renderer, 8, 8, 8, 255);
         SDL_RenderClear(renderer);
+
+        //d.timesTable += 0.05;
+
+        hsvColoring(color, d.timesTable, 1, 1);
+        d.red = color[0];
+        d.green = color[1];
+        d.blue = color[2];
 
         renderFunction(renderer, &d);
 

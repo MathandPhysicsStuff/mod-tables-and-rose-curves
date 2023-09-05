@@ -23,4 +23,6 @@ typedef struct Data
 
 void renderFunction(SDL_Renderer* renderer, Data* d);
 
+void hsvColoring(int* color, double h, double s, double v);
+
 #endif
