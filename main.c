@@ -10,9 +10,14 @@
 static SDL_Window *window = NULL;
 static SDL_Renderer *renderer = NULL;
 
-const int SCREEN_WIDTH = 760;
+const int SCREEN_WIDTH = 720;
 const int SCREEN_HEIGHT = 720;
 
+typedef enum Curve 
+{
+    MOD,
+    ROSE
+} Curve;
 
 int main()
 {
@@ -30,17 +35,29 @@ int main()
                                    -1,
                                    SDL_RENDERER_ACCELERATED);
 
-    SDL_Texture *mod_text, *timesTable_text;
+    SDL_Texture *mod_text, *timesTable_text, *n_text, *d_text, *k_text;
     SDL_Color text_color = { 220, 220, 220 };
 
     int mod_number;
     double timesTable_number;
     char mod_str[24];
     char timesTable_str[24];
+    
+    int n_number;
+    int d_number; 
+    double k_number;
+    char n_str[24];
+    char d_str[24];
+    char k_str[24];
+
     SDL_bool showText = SDL_TRUE;
 
     SDL_Rect modPosition_rect = { 5, 5, 120, 20};
     SDL_Rect timesTablePosition_rect = { 5, 25, 160, 24};
+
+    SDL_Rect nPosition_rect = { 5, 5, 120, 20};
+    SDL_Rect dPosition_rect = { 5, 25, 160, 24};
+    SDL_Rect kPosition_rect = { 5, 50, 160, 24};
 
     Data d = 
     {
@@ -48,9 +65,22 @@ int main()
         .timesTable = 0,
         .Xcenter = SCREEN_WIDTH/2,        
         .Ycenter = SCREEN_HEIGHT/2,
-        .radius = 360,
+        .radius = 300,
         .red = 255, .green = 0, .blue = 0        
     };
+
+    RoseData rd =
+    {
+        .n = 2,
+        .d = 1,
+        .points = 1000,
+        .Xcenter = SCREEN_WIDTH/2,        
+        .Ycenter = SCREEN_HEIGHT/2,
+        .radius = 300,
+        .red = 255, .green = 0, .blue = 0        
+    };
+
+    Curve curve = ROSE;
 
     int color[3];
 
@@ -71,14 +101,18 @@ int main()
                 {
                     case SDLK_LEFT:
                         d.timesTable -= 1;
+                        
+                        if (rd.d > 1) rd.d -= 1;
                         break;
 
                     case SDLK_RIGHT:
                         d.timesTable += 1;
+                        rd.d += 1;
                         break;
 
                     case SDLK_UP:
                         d.mod += 1;
+                        rd.n += 1;
                         break;
 
                     case SDLK_DOWN:
@@ -86,6 +120,7 @@ int main()
                         {
                             d.mod -= 1;
                         }
+                        if (rd.n > 1) rd.n -= 1;
                         break;
 
                     case SDLK_s:
@@ -105,32 +140,65 @@ int main()
         d.red = color[0];
         d.green = color[1];
         d.blue = color[2];
-
-        renderFunction(renderer, &d);
+        
+        if (curve == MOD) renderModFunction(renderer, &d);
+        else if (curve == ROSE) renderRoseFunction(renderer, &rd);
 
         mod_number = d.mod;
         timesTable_number = d.timesTable;
+
+        n_number = rd.n;
+        d_number = rd.d;
+        k_number = (double)rd.n / (double)rd.d;
         
         if (showText == SDL_TRUE)
         {
             TTF_Font* font = TTF_OpenFont("DejaVuMathTeXGyre.ttf", 64);
+            
+            if (curve == MOD)
+            {
+                char render_mod[24] = "mod: ";
+                char render_timesTable[24] = "times table: ";
 
-            char render_mod[24] = "mod: ";
-            char render_timesTable[24] = "times table: ";
+                sprintf(mod_str, "%d", mod_number);
+                sprintf(timesTable_str, "%lf", timesTable_number);
 
-            sprintf(mod_str, "%d", mod_number);
-            sprintf(timesTable_str, "%lf", timesTable_number);
+                strncat(render_mod, mod_str, 24 - strlen(render_mod) - 1);
+                strncat(render_timesTable, timesTable_str, 24 - strlen(render_timesTable) - 1);
 
-            strncat(render_mod, mod_str, 24 - strlen(render_mod) - 1);
-            strncat(render_timesTable, timesTable_str, 24 - strlen(render_timesTable) - 1);
+                mod_text = create_texture(renderer, font, render_mod, text_color);
+                timesTable_text = create_texture(renderer, font, render_timesTable, text_color);
 
-            mod_text = create_texture(renderer, font, render_mod, text_color);
-            timesTable_text = create_texture(renderer, font, render_timesTable, text_color);
+                TTF_CloseFont(font);
 
-            TTF_CloseFont(font);
+                render_texture(renderer, mod_text, modPosition_rect);
+                render_texture(renderer, timesTable_text, timesTablePosition_rect);
+            }
 
-            render_texture(renderer, mod_text, modPosition_rect);
-            render_texture(renderer, timesTable_text, timesTablePosition_rect);
+            else if (curve == ROSE)
+            {
+                char render_n[24] = "numerator: ";
+                char render_d[24] = "denominator: ";
+                char render_k[24] = "k = n/d: ";
+
+                sprintf(n_str, "%d", n_number);
+                sprintf(d_str, "%d", d_number);
+                sprintf(k_str, "%lf", k_number);
+
+                strncat(render_n, n_str, 24 - strlen(render_n) - 1);
+                strncat(render_d, d_str, 24 - strlen(render_d) - 1);
+                strncat(render_k, k_str, 24 - strlen(render_k) - 1);
+
+                n_text = create_texture(renderer, font, render_n, text_color);
+                d_text = create_texture(renderer, font, render_d, text_color);
+                k_text = create_texture(renderer, font, render_k, text_color);
+
+                TTF_CloseFont(font);
+
+                render_texture(renderer, n_text, nPosition_rect);
+                render_texture(renderer, d_text, dPosition_rect);
+                render_texture(renderer, k_text, kPosition_rect);
+            }
         }
 
         SDL_RenderPresent(renderer);

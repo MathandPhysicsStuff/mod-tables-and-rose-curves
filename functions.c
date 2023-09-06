@@ -1,7 +1,7 @@
 #include "functions.h"
 
 
-void renderFunction(SDL_Renderer* renderer, Data* d)
+void renderModFunction(SDL_Renderer* renderer, Data* d)
 {
     //number of points
     double t = 0;
@@ -16,8 +16,37 @@ void renderFunction(SDL_Renderer* renderer, Data* d)
 
         x1 = d->Xcenter + d->radius*cos(t * d->timesTable); 
         y1 = d->Ycenter + d->radius*sin(t * d->timesTable);
+        
+        SDL_SetRenderDrawColor(renderer, d->red, d->green, d->blue, 255);
+        SDL_RenderDrawLine(renderer, x0, y0, x1, y1);
+
+        t += step;
+    }
+}
 
 
+void renderRoseFunction(SDL_Renderer* renderer, RoseData* d)
+{
+    double k = (double)d->n / (double)d->d;
+
+    //number of points
+    double t = 0;
+    double tau = (double)d->d*6.2831852;
+    double step = tau / (double)d->points;
+    double x0, y0, x1, y1, r0, r1;
+
+
+    while (t < tau)
+    {
+        r0 = cos(k * t);
+        r1 = cos(k * (t+step));
+
+        x0 = d->Xcenter + r0*d->radius*cos(t); 
+        y0 = d->Ycenter + r0*d->radius*sin(t);
+
+        x1 = d->Xcenter + r1*d->radius*cos(t + step); 
+        y1 = d->Ycenter + r1*d->radius*sin(t + step);
+        
         SDL_SetRenderDrawColor(renderer, d->red, d->green, d->blue, 255);
         SDL_RenderDrawLine(renderer, x0, y0, x1, y1);
 

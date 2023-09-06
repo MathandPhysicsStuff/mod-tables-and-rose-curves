@@ -21,7 +21,25 @@ typedef struct Data
 
 } Data;
 
-void renderFunction(SDL_Renderer* renderer, Data* d);
+typedef struct RoseData 
+{
+    int points;
+
+    int n;    
+    int d;    
+
+    double Xcenter;
+    double Ycenter;
+
+    double radius;
+
+    int red, green, blue;
+
+} RoseData;
+
+void renderModFunction(SDL_Renderer* renderer, Data* d);
+
+void renderRoseFunction(SDL_Renderer* renderer, RoseData* d);
 
 void hsvColoring(int* color, double h, double s, double v);
 
