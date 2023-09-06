@@ -1,1 +1,1 @@
-# times-table-mod-n
+# Modular Multiplication Tables and Rose Curves
