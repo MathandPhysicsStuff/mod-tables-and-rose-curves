@@ -35,7 +35,7 @@ int main()
                                    -1,
                                    SDL_RENDERER_ACCELERATED);
 
-    SDL_Texture *mod_text, *timesTable_text, *n_text, *d_text, *k_text;
+    SDL_Texture *mod_text, *timesTable_text, *n_text, *d_text, *k_text, *step_text;
     SDL_Color text_color = { 220, 220, 220 };
 
     int mod_number;
@@ -45,10 +45,12 @@ int main()
     
     int n_number;
     int d_number; 
+    int step_number;
     double k_number;
     char n_str[24];
     char d_str[24];
     char k_str[24];
+    char step_str[24];
 
     SDL_bool showText = SDL_TRUE;
 
@@ -58,6 +60,7 @@ int main()
     SDL_Rect nPosition_rect = { 5, 5, 120, 20};
     SDL_Rect dPosition_rect = { 5, 25, 160, 24};
     SDL_Rect kPosition_rect = { 5, 50, 160, 24};
+    SDL_Rect stepPosition_rect = { 5, 75, 160, 24};
 
     Data d = 
     {
@@ -111,11 +114,21 @@ int main()
         SDL_RenderClear(renderer);
 
         //d.timesTable += 0.05;
-
-        hsvColoring(color, d.timesTable, 1, 1);
-        d.red = color[0];
-        d.green = color[1];
-        d.blue = color[2];
+        
+        if (curve == MOD)
+        {
+            hsvColoring(color, d.timesTable, 1, 1);
+            d.red = color[0];
+            d.green = color[1];
+            d.blue = color[2];
+        }
+        else if (curve == ROSE)
+        {
+            hsvColoring(color, rd.a, 1, 1);
+            rd.red = color[0];
+            rd.green = color[1];
+            rd.blue = color[2];
+        }
         
         if (curve == MOD) renderModFunction(renderer, &d);
         else if (curve == ROSE) renderRoseFunction(renderer, &rd);
@@ -125,6 +138,7 @@ int main()
 
         n_number = rd.n;
         d_number = rd.d;
+        step_number = rd.a;
         k_number = (double)rd.n / (double)rd.d;
         
         if (showText == SDL_TRUE)
@@ -156,24 +170,29 @@ int main()
                 char render_n[24] = "numerator: ";
                 char render_d[24] = "denominator: ";
                 char render_k[24] = "k = n/d: ";
+                char render_step[24] = "degree step: ";
 
                 sprintf(n_str, "%d", n_number);
                 sprintf(d_str, "%d", d_number);
+                sprintf(step_str, "%d", step_number);
                 sprintf(k_str, "%lf", k_number);
 
                 strncat(render_n, n_str, 24 - strlen(render_n) - 1);
                 strncat(render_d, d_str, 24 - strlen(render_d) - 1);
                 strncat(render_k, k_str, 24 - strlen(render_k) - 1);
+                strncat(render_step, step_str, 24 - strlen(render_step) - 1);
 
                 n_text = create_texture(renderer, font, render_n, text_color);
                 d_text = create_texture(renderer, font, render_d, text_color);
                 k_text = create_texture(renderer, font, render_k, text_color);
+                step_text = create_texture(renderer, font, render_step, text_color);
 
                 TTF_CloseFont(font);
 
                 render_texture(renderer, n_text, nPosition_rect);
                 render_texture(renderer, d_text, dPosition_rect);
                 render_texture(renderer, k_text, kPosition_rect);
+                render_texture(renderer, step_text, stepPosition_rect);
             }
         }
 
