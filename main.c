@@ -73,7 +73,8 @@ int main()
     {
         .n = 2,
         .d = 1,
-        .points = 1000,
+        .a = 39,
+        .points = 720,
         .Xcenter = SCREEN_WIDTH/2,        
         .Ycenter = SCREEN_HEIGHT/2,
         .radius = 300,
@@ -121,6 +122,14 @@ int main()
                             d.mod -= 1;
                         }
                         if (rd.n > 1) rd.n -= 1;
+                        break;
+
+                    case SDLK_a:
+                        if (rd.a > 1) rd.a -= 1;
+                        break;
+
+                    case SDLK_d:
+                        rd.a += 1;
                         break;
 
                     case SDLK_s:

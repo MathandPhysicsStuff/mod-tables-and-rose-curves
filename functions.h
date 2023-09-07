@@ -27,6 +27,7 @@ typedef struct RoseData
 
     int n;    
     int d;    
+    double a;    
 
     double Xcenter;
     double Ycenter;

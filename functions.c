@@ -27,30 +27,27 @@ void renderModFunction(SDL_Renderer* renderer, Data* d)
 
 void renderRoseFunction(SDL_Renderer* renderer, RoseData* d)
 {
+    int i;
     double k = (double)d->n / (double)d->d;
+    double x0, y0, x1, y1, r0, r1, t0, t1;
+    double map = 3.1415926 / 180.0;
 
-    //number of points
-    double t = 0;
-    double tau = (double)d->d*6.2831852;
-    double step = tau / (double)d->points;
-    double x0, y0, x1, y1, r0, r1;
-
-
-    while (t < tau)
+    for (i = 0; i < 361; i++)
     {
-        r0 = cos(k * t);
-        r1 = cos(k * (t+step));
+        t0 = map * (double)i * d->a;
+        t1 = map * (double)(i+1) * d->a;
 
-        x0 = d->Xcenter + r0*d->radius*cos(t); 
-        y0 = d->Ycenter + r0*d->radius*sin(t);
+        r0 = d->radius*sin(k * t0);
+        r1 = d->radius*sin(k * t1);
 
-        x1 = d->Xcenter + r1*d->radius*cos(t + step); 
-        y1 = d->Ycenter + r1*d->radius*sin(t + step);
-        
+        x0 = d->Xcenter + r0*cos(t0);
+        y0 = d->Ycenter + r0*sin(t0);
+
+        x1 = d->Xcenter + r1*cos(t1);
+        y1 = d->Ycenter + r1*sin(t1);
+ 
         SDL_SetRenderDrawColor(renderer, d->red, d->green, d->blue, 255);
         SDL_RenderDrawLine(renderer, x0, y0, x1, y1);
-
-        t += step;
     }
 }
 
