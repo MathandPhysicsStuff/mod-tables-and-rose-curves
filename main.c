@@ -96,47 +96,14 @@ int main()
                 running = SDL_FALSE;
                 break;
             }
-            if (event.type == SDL_KEYDOWN)
+
+            if (curve == MOD)
             {
-                switch (event.key.keysym.sym)
-                {
-                    case SDLK_LEFT:
-                        d.timesTable -= 1;
-                        
-                        if (rd.d > 1) rd.d -= 1;
-                        break;
-
-                    case SDLK_RIGHT:
-                        d.timesTable += 1;
-                        rd.d += 1;
-                        break;
-
-                    case SDLK_UP:
-                        d.mod += 1;
-                        rd.n += 1;
-                        break;
-
-                    case SDLK_DOWN:
-                        if (d.mod >= 1)
-                        {
-                            d.mod -= 1;
-                        }
-                        if (rd.n > 1) rd.n -= 1;
-                        break;
-
-                    case SDLK_a:
-                        if (rd.a > 1) rd.a -= 1;
-                        break;
-
-                    case SDLK_d:
-                        rd.a += 1;
-                        break;
-
-                    case SDLK_s:
-                        if (showText == SDL_TRUE) showText = SDL_FALSE;
-                        else showText = SDL_TRUE;
-                        break;
-                }
+                showText = eventMod(event, &d, showText);
+            }
+            else if (curve == ROSE)
+            {
+                showText = eventRose(event, &rd, showText);
             }
         }
 

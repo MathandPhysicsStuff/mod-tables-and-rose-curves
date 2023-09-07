@@ -77,9 +77,75 @@ void hsvColoring(int* color, double h, double s, double v)
 
 }
 
+SDL_bool eventMod(SDL_Event event, Data* d, SDL_bool show)
+{
+    if (event.type == SDL_KEYDOWN)
+    {
+        switch (event.key.keysym.sym)
+        {
+            case SDLK_LEFT:
+                d->timesTable -= 1;
+                break;
 
+            case SDLK_RIGHT:
+                d->timesTable += 1;
+                break;
 
+            case SDLK_UP:
+                d->mod += 1;
+                break;
 
+            case SDLK_DOWN:
+                if (d->mod >= 1) d->mod -= 1;
+                break;
+
+            case SDLK_s:
+                if (show == SDL_FALSE) show = SDL_TRUE;
+                else show = SDL_FALSE;
+                break;
+        }
+    }
+    return show;
+}
+
+SDL_bool eventRose(SDL_Event event, RoseData* d, SDL_bool show)
+{
+    if (event.type == SDL_KEYDOWN)
+    {
+        switch (event.key.keysym.sym)
+        {
+            case SDLK_LEFT:
+                if (d->d > 1) d->d -= 1;
+                break;
+
+            case SDLK_RIGHT:
+                d->d += 1;
+                break;
+
+            case SDLK_UP:
+                d->n += 1;
+                break;
+
+            case SDLK_DOWN:
+                if (d->n > 1) d->n -= 1;
+                break;
+
+            case SDLK_s:
+                if (show == SDL_FALSE) show = SDL_TRUE;
+                else show = SDL_FALSE;
+                break;
+
+            case SDLK_a:
+                if (d->a > 1) d->a -= 1;
+                break;
+
+            case SDLK_d:
+                d->a += 1;
+                break;
+        }
+    }
+    return show;
+}
 
 
 

@@ -44,4 +44,9 @@ void renderRoseFunction(SDL_Renderer* renderer, RoseData* d);
 
 void hsvColoring(int* color, double h, double s, double v);
 
+SDL_bool eventMod(SDL_Event event, Data* d, SDL_bool show);
+
+SDL_bool eventRose(SDL_Event event, RoseData* d, SDL_bool show);
+
+
 #endif
