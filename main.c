@@ -35,13 +35,15 @@ int main()
                                    -1,
                                    SDL_RENDERER_ACCELERATED);
 
-    SDL_Texture *mod_text, *timesTable_text, *n_text, *d_text, *k_text, *step_text;
+    SDL_Texture *mod_text, *timesTable_text, *n_text, *d_text, *k_text, *step_text, *remainder_text;
     SDL_Color text_color = { 220, 220, 220 };
 
     int mod_number;
+    int remainder_number;
     double timesTable_number;
     char mod_str[24];
     char timesTable_str[24];
+    char remainder_str[24];
     
     int n_number;
     int d_number; 
@@ -56,6 +58,7 @@ int main()
 
     SDL_Rect modPosition_rect = { 5, 5, 120, 20};
     SDL_Rect timesTablePosition_rect = { 5, 25, 160, 24};
+    SDL_Rect remainderPosition_rect = { 5, 50, 160, 24};
 
     SDL_Rect nPosition_rect = { 5, 5, 120, 20};
     SDL_Rect dPosition_rect = { 5, 25, 160, 24};
@@ -65,12 +68,14 @@ int main()
     Data d = 
     {
         .mod = 720,
-        .timesTable = 0,
+        .timesTable = 13,
         .Xcenter = SCREEN_WIDTH/2,        
         .Ycenter = SCREEN_HEIGHT/2,
         .radius = 300,
         .red = 255, .green = 0, .blue = 0        
     };
+
+    printf("%d\n", d.mod % (int)d.timesTable);
 
     RoseData rd =
     {
@@ -84,7 +89,7 @@ int main()
         .red = 255, .green = 0, .blue = 0        
     };
 
-    Curve curve = ROSE;
+    Curve curve = MOD;
 
     int color[3];
 
@@ -124,7 +129,7 @@ int main()
         }
         else if (curve == ROSE)
         {
-            hsvColoring(color, rd.a, 1, 1);
+            hsvColoring(color, rd.a + 324, 1, 1);
             rd.red = color[0];
             rd.green = color[1];
             rd.blue = color[2];
@@ -135,6 +140,7 @@ int main()
 
         mod_number = d.mod;
         timesTable_number = d.timesTable;
+        remainder_number = d.mod % (int)d.timesTable;
 
         n_number = rd.n;
         d_number = rd.d;
@@ -149,19 +155,24 @@ int main()
             {
                 char render_mod[24] = "mod: ";
                 char render_timesTable[24] = "times table: ";
+                char render_remainder[24] = "mod % times table: ";
 
                 sprintf(mod_str, "%d", mod_number);
+                sprintf(remainder_str, "%d", remainder_number);
                 sprintf(timesTable_str, "%lf", timesTable_number);
 
                 strncat(render_mod, mod_str, 24 - strlen(render_mod) - 1);
+                strncat(render_remainder, remainder_str, 24 - strlen(render_remainder) - 1);
                 strncat(render_timesTable, timesTable_str, 24 - strlen(render_timesTable) - 1);
 
                 mod_text = create_texture(renderer, font, render_mod, text_color);
+                remainder_text = create_texture(renderer, font, render_remainder, text_color);
                 timesTable_text = create_texture(renderer, font, render_timesTable, text_color);
 
                 TTF_CloseFont(font);
 
                 render_texture(renderer, mod_text, modPosition_rect);
+                render_texture(renderer, remainder_text, remainderPosition_rect);
                 render_texture(renderer, timesTable_text, timesTablePosition_rect);
             }
 

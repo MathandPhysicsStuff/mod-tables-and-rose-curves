@@ -28,9 +28,11 @@ void renderModFunction(SDL_Renderer* renderer, Data* d)
 void renderRoseFunction(SDL_Renderer* renderer, RoseData* d)
 {
     int i;
+    int loop = 360 * d->d;
     double k = (double)d->n / (double)d->d;
     double x0, y0, x1, y1, r0, r1, t0, t1;
     double map = 3.1415926 / 180.0;
+
 
     for (i = 0; i < 361; i++)
     {
